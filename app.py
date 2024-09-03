@@ -1,10 +1,3 @@
-from dotenv import load_dotenv
-import os
-load_dotenv()
-
-os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
-access_key = os.getenv("PVPORCUPINE_ACCESS_KEY")
-
 import pvporcupine
 import pyaudio
 import numpy as np
@@ -12,9 +5,11 @@ import speech_recognition as sr
 from AppOpener import open
 from speech_to_text import get_speech
 
+from settings import Settings
+
 
 porcupine = pvporcupine.create(
-    access_key=access_key,
+    access_key=Settings.pv_access_key,
     keyword_paths=["Hey-Friday_en_windows_v3_0_0.ppn"],
     # model_path="porcupine_params_ja.pv"
 )
@@ -28,7 +23,6 @@ def audio_callback(in_data, frame_count, time_info, status):
     result = porcupine.process(pcm)
     
     if result >= 0:
-        open("whatsapp")
         text = get_speech()
         print(text)
 
